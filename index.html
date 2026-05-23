@@ -1,193 +1,213 @@
 <!DOCTYPE html>
-<html lang="es">
-
+<html lang="es" data-theme="dark">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FIFA World Cup 2026</title>
-
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FIFA World Cup 2026 — Tracker Oficial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,700&family=Barlow:wght@300;400;500;600&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
 
-    <header class="navbar">
-        <div class="container nav-content">
-            <div>
-                <h1>FIFA WORLD CUP 2026</h1>
-                <p>Estados Unidos · Canadá · México</p>
-            </div>
+<!-- ══════════════════ HEADER ══════════════════ -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo">
+      <span class="logo-icon">⚽</span>
+      <div class="logo-text">
+        <span class="logo-title">WORLD CUP</span>
+        <span class="logo-year">2026</span>
+      </div>
+    </div>
 
-            <nav>
-                <a href="#matches">Partidos</a>
-                <a href="#groups">Grupos</a>
-                <a href="#bracket">Eliminatorias</a>
-                <a href="#stadiums">Estadios</a>
-                <a href="#teams">Selecciones</a>
-            </nav>
+    <nav class="main-nav" id="mainNav">
+      <a href="#" class="nav-link active" data-section="inicio">Inicio</a>
+      <a href="#" class="nav-link" data-section="fixture">Fixture</a>
+      <a href="#" class="nav-link" data-section="grupos">Grupos</a>
+      <a href="#" class="nav-link" data-section="sedes">Sedes</a>
+      <a href="#" class="nav-link" data-section="simulador">Simulador</a>
+    </nav>
+
+    <div class="header-actions">
+      <div class="search-wrap">
+        <input type="text" class="search-input" id="globalSearch" placeholder="Buscar selección…" autocomplete="off" />
+        <span class="search-icon">⌕</span>
+        <div class="search-dropdown" id="searchDropdown"></div>
+      </div>
+      <button class="theme-toggle" id="themeToggle" title="Cambiar tema">
+        <span class="theme-icon">☀</span>
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════ MAIN ══════════════════ -->
+<main id="appRoot">
+
+  <!-- ── SECCIÓN: INICIO ── -->
+  <section class="page active" id="page-inicio">
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-bg">
+        <div class="hero-mesh"></div>
+        <div class="hero-grid"></div>
+      </div>
+      <div class="hero-content">
+        <div class="hero-badge">FIFA WORLD CUP™</div>
+        <h1 class="hero-title">
+          <span class="hero-title-sub">ESTADOS UNIDOS · MÉXICO · CANADÁ</span>
+          <span class="hero-title-main">2026</span>
+        </h1>
+        <p class="hero-desc">11 de junio — 19 de julio · 48 selecciones · 104 partidos · 16 ciudades</p>
+
+        <!-- Countdown -->
+        <div class="countdown-wrap">
+          <div class="countdown-label">PRÓXIMO PARTIDO DESTACADO</div>
+          <div class="next-match-hero" id="nextMatchHero"></div>
+          <div class="countdown" id="countdown">
+            <div class="cd-block"><span class="cd-num" id="cd-days">00</span><span class="cd-unit">días</span></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-block"><span class="cd-num" id="cd-hours">00</span><span class="cd-unit">horas</span></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-block"><span class="cd-num" id="cd-mins">00</span><span class="cd-unit">mins</span></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-block"><span class="cd-num" id="cd-secs">00</span><span class="cd-unit">segs</span></div>
+          </div>
         </div>
-    </header>
+      </div>
 
-    <section class="hero">
-        <div class="overlay"></div>
+      <!-- Live match ticker -->
+      <div class="live-ticker" id="liveTicker"></div>
+    </div>
 
-        <div class="container hero-grid">
-            <div>
-                <div class="badge">
-                    ⚽ Mundial más grande de la historia
-                </div>
+    <!-- Stats strip -->
+    <div class="stats-strip">
+      <div class="stat-item"><span class="stat-num">48</span><span class="stat-label">Selecciones</span></div>
+      <div class="stat-item"><span class="stat-num">104</span><span class="stat-label">Partidos</span></div>
+      <div class="stat-item"><span class="stat-num">16</span><span class="stat-label">Ciudades</span></div>
+      <div class="stat-item"><span class="stat-num">3</span><span class="stat-label">Países</span></div>
+      <div class="stat-item"><span class="stat-num">12</span><span class="stat-label">Grupos</span></div>
+    </div>
 
-                <h2>
-                    WORLD CUP
-                    <span>2026</span>
-                </h2>
+    <!-- Featured matches -->
+    <div class="section-wrap">
+      <div class="section-header">
+        <h2 class="section-title">PARTIDOS DESTACADOS</h2>
+        <button class="btn-outline" data-goto="fixture">Ver todos →</button>
+      </div>
+      <div class="matches-grid" id="featuredMatches"></div>
+    </div>
 
-                <p>
-                    Sigue todos los partidos, horarios, grupos,
-                    clasificaciones, estadísticas y eliminatorias
-                    del Mundial FIFA 2026.
-                </p>
+  </section>
 
-                <div class="hero-buttons">
-                    <button class="primary-btn">Ver calendario</button>
-                    <button class="secondary-btn">Explorar grupos</button>
-                </div>
-            </div>
+  <!-- ── SECCIÓN: FIXTURE ── -->
+  <section class="page" id="page-fixture">
+    <div class="section-wrap">
+      <div class="section-header">
+        <h2 class="section-title">FIXTURE COMPLETO</h2>
+      </div>
 
-            <div class="hero-image-card">
-                <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1200&auto=format&fit=crop"
-                    alt="Football" />
-            </div>
+      <!-- Filters -->
+      <div class="filters-bar">
+        <select class="filter-select" id="filterPhase">
+          <option value="">Todas las fases</option>
+          <option value="Fase de Grupos">Fase de Grupos</option>
+          <option value="Dieciseisavos">Dieciseisavos</option>
+          <option value="Octavos">Octavos de Final</option>
+          <option value="Cuartos">Cuartos de Final</option>
+          <option value="Semifinal">Semifinal</option>
+          <option value="Tercer Puesto">3er Puesto</option>
+          <option value="Final">Final</option>
+        </select>
+        <select class="filter-select" id="filterGroup">
+          <option value="">Todos los grupos</option>
+        </select>
+        <select class="filter-select" id="filterStadium">
+          <option value="">Todos los estadios</option>
+        </select>
+        <select class="filter-select" id="filterCountry">
+          <option value="">Todos los países sede</option>
+          <option value="USA">Estados Unidos 🇺🇸</option>
+          <option value="MEX">México 🇲🇽</option>
+          <option value="CAN">Canadá 🇨🇦</option>
+        </select>
+        <button class="btn-reset" id="resetFilters">✕ Limpiar</button>
+      </div>
+
+      <!-- Phase tabs -->
+      <div class="phase-tabs" id="phaseTabs"></div>
+
+      <!-- Match list -->
+      <div class="matches-list" id="fixtureList"></div>
+    </div>
+  </section>
+
+  <!-- ── SECCIÓN: GRUPOS ── -->
+  <section class="page" id="page-grupos">
+    <div class="section-wrap">
+      <div class="section-header">
+        <h2 class="section-title">TABLA DE POSICIONES</h2>
+        <p class="section-subtitle">12 grupos · 48 selecciones</p>
+      </div>
+      <div class="groups-grid" id="groupsGrid"></div>
+    </div>
+  </section>
+
+  <!-- ── SECCIÓN: SEDES ── -->
+  <section class="page" id="page-sedes">
+    <div class="section-wrap">
+      <div class="section-header">
+        <h2 class="section-title">SEDES Y ESTADIOS</h2>
+        <p class="section-subtitle">16 ciudades en 3 países</p>
+      </div>
+
+      <!-- Country filter pills -->
+      <div class="pill-filters">
+        <button class="pill active" data-country="all">Todos</button>
+        <button class="pill" data-country="USA">🇺🇸 EE.UU.</button>
+        <button class="pill" data-country="MEX">🇲🇽 México</button>
+        <button class="pill" data-country="CAN">🇨🇦 Canadá</button>
+      </div>
+
+      <div class="stadiums-grid" id="stadiumsGrid"></div>
+    </div>
+  </section>
+
+  <!-- ── SECCIÓN: SIMULADOR ── -->
+  <section class="page" id="page-simulador">
+    <div class="section-wrap">
+      <div class="section-header">
+        <h2 class="section-title">SIMULADOR DE RESULTADOS</h2>
+        <p class="section-subtitle">Predice los clasificados de cada grupo y genera tu bracket</p>
+      </div>
+      <div class="sim-groups" id="simGroups"></div>
+      <div class="sim-bracket-wrap" id="simBracketWrap" style="display:none">
+        <div class="section-header" style="margin-top:2rem">
+          <h2 class="section-title">BRACKET GENERADO</h2>
+          <button class="btn-outline" id="resetSim">↺ Reiniciar</button>
         </div>
-    </section>
+        <div class="bracket-grid" id="bracketGrid"></div>
+      </div>
+    </div>
+  </section>
 
-    <section id="matches" class="section">
-        <div class="container">
+</main>
 
-            <div class="section-title">
-                <h3>Partidos</h3>
-                <p>Calendario del torneo</p>
-            </div>
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-logo">⚽ FIFA WORLD CUP 2026</div>
+    <p class="footer-copy">Aplicación de seguimiento no oficial. Datos simulados con fines demostrativos.</p>
+    <div class="footer-tz" id="footerTz"></div>
+  </div>
+</footer>
 
-            <div class="match-grid" id="matches-container"></div>
-
-        </div>
-    </section>
-
-    <section id="groups" class="section dark-section">
-        <div class="container">
-
-            <div class="section-title">
-                <h3>Fase de grupos</h3>
-                <p>Clasificación y posiciones</p>
-            </div>
-
-            <div class="groups-grid" id="groups-container"></div>
-
-        </div>
-    </section>
-
-    <section id="bracket" class="section">
-        <div class="container">
-
-            <div class="section-title">
-                <h3>Eliminatorias</h3>
-                <p>Camino hacia la final</p>
-            </div>
-
-            <div class="bracket-grid">
-
-                <div class="bracket-column">
-                    <h4>Octavos</h4>
-
-                    <div class="bracket-card">
-                        <span>Argentina</span>
-                        <strong>2</strong>
-                    </div>
-
-                    <div class="bracket-card">
-                        <span>Portugal</span>
-                        <strong>1</strong>
-                    </div>
-                </div>
-
-                <div class="bracket-column">
-                    <h4>Cuartos</h4>
-
-                    <div class="bracket-card">
-                        <span>España</span>
-                        <strong>3</strong>
-                    </div>
-
-                    <div class="bracket-card">
-                        <span>Brasil</span>
-                        <strong>2</strong>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-    </section>
-
-    <section id="stadiums" class="section dark-section">
-        <div class="container">
-
-            <div class="section-title">
-                <h3>Estadios</h3>
-                <p>Sedes oficiales</p>
-            </div>
-
-            <div class="stadium-grid">
-
-                <div class="stadium-card">
-                    <img
-                        src="https://images.unsplash.com/photo-1547347298-4074fc3086f0?q=80&w=1200&auto=format&fit=crop">
-
-                    <div class="stadium-content">
-                        <h4>MetLife Stadium</h4>
-                        <p>New Jersey</p>
-                    </div>
-                </div>
-
-                <div class="stadium-card">
-                    <img
-                        src="https://images.unsplash.com/photo-1518604666860-9ed391f76460?q=80&w=1200&auto=format&fit=crop">
-
-                    <div class="stadium-content">
-                        <h4>Estadio Azteca</h4>
-                        <p>Ciudad de México</p>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-    </section>
-
-    <section id="teams" class="section">
-        <div class="container">
-
-            <div class="section-title">
-                <h3>Selecciones</h3>
-                <p>Equipos clasificados</p>
-            </div>
-
-            <div class="teams-grid" id="teams-container"></div>
-
-        </div>
-    </section>
-
-    <footer>
-        <div class="container footer-content">
-            <div>
-                <h4>WORLD CUP 2026</h4>
-                <p>Experiencia interactiva moderna</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
+<script src="app.js"></script>
 </body>
-
 </html>
