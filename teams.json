@@ -1,0 +1,6 @@
+{
+  "ESP": { "name": "España", "group": "H", "flag": "https://flagcdn.com/w320/es.png" },
+  "URU": { "name": "Uruguay", "group": "H", "flag": "https://flagcdn.com/w320/uy.png" },
+  "MEX": { "name": "México", "group": "A", "flag": "https://flagcdn.com/w320/mx.png" },
+  "RSA": { "name": "Sudáfrica", "group": "A", "flag": "https://flagcdn.com/w320/za.png" }
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "group": "A",
+    "home": "MEX",
+    "away": "RSA",
+    "date": "2026-06-11",
+    "time_es": "21:00",
+    "played": false,
+    "score": { "home": null, "away": null }
+  },
+  {
+    "id": 2,
+    "group": "A",
+    "home": "KOR",
+    "away": "CZE",
+    "date": "2026-06-12",
+    "time_es": "04:00",
+    "played": false,
+    "score": { "home": null, "away": null }
+  }
+]

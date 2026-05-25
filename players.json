@@ -1,0 +1,13 @@
+[
+  {
+    "id": "p_01",
+    "name": "Lamine Yamal",
+    "team": "ESP",
+    "position": "Delantero",
+    "stats": {
+      "goals": 0,
+      "assists": 0,
+      "saves": 0
+    }
+  }
+]
