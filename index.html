@@ -36,6 +36,9 @@
         <span class="search-icon">⌕</span>
         <div class="search-dropdown" id="searchDropdown"></div>
       </div>
+      <button class="theme-toggle" id="apiSettingsToggle" title="Ajustes de API" style="margin-right: 0.5rem;">
+        <span class="theme-icon">⚙️</span>
+      </button>
       <button class="theme-toggle" id="themeToggle" title="Cambiar tema">
         <span class="theme-icon">☀</span>
       </button>
@@ -207,6 +210,216 @@
     <div class="footer-tz" id="footerTz"></div>
   </div>
 </footer>
+
+<!-- Modal: Ajustes de API y Realismo -->
+<div class="modal-overlay" id="apiSettingsModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>⚙️ Centro de Datos y Realismo API</h3>
+      <button class="modal-close" id="closeApiModal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div style="background: rgba(245, 197, 24, 0.05); padding: 0.85rem; border-radius: 8px; border: 1px solid var(--border-bright); margin-bottom: 1.25rem;">
+        <p style="font-size: 0.85rem; line-height: 1.4; color: var(--text-2);">
+          📡 <strong>Conexión Automática a TheSportsDB (Liga 4429):</strong><br>
+          Esta aplicación se conecta de forma gratuita al servidor para el Mundial. Como el torneo real empieza el 11 de junio de 2026, por defecto la app se mantiene en <strong>Modo Realista (Limpio)</strong> en ceros.
+        </p>
+      </div>
+      <div class="form-group" style="margin-bottom: 1.25rem;">
+        <label for="demoModeToggle" class="switch-label" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+          <span style="font-weight: 600; color: var(--text-1);">Activar Resultados Demo (Ficticios)</span>
+          <input type="checkbox" id="demoModeToggle" style="width: 1.5rem; height: 1.5rem; cursor: pointer;">
+        </label>
+        <p class="form-help" style="font-size: 0.75rem; color: var(--text-3); margin-top: 0.25rem;">Activa marcadores y clasificados ficticios de muestra para ver cómo se verá la app cuando el torneo esté avanzado.</p>
+      </div>
+      <div class="api-status-banner" id="apiStatusBanner" style="display:none; padding: 0.75rem; border-radius: 8px; font-size: 0.85rem; margin-top: 1rem; text-align: center; font-weight: 500;"></div>
+    </div>
+    <div class="modal-footer" style="display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1.5rem;">
+      <button class="btn-outline" id="testApiBtn">Sincronizar Con API</button>
+      <button class="btn-primary" id="saveApiBtn">Aplicar Cambios</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Centro de Partido en Vivo -->
+<div class="modal-overlay" id="liveMatchCenterModal">
+  <div class="modal-content live-match-content">
+    <div class="modal-header" style="border-bottom: 1px solid var(--border); padding-bottom: 1rem;">
+      <div class="live-badge-title" style="display: flex; align-items: center; gap: 0.5rem;">
+        <span class="live-dot" style="background-color: var(--accent); width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+        <span id="lmPhaseText" style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent);">FASE DE GRUPOS</span>
+      </div>
+      <button class="modal-close" id="closeLiveMatchModal" style="background: none; border: none; font-size: 1.5rem; color: var(--text-2); cursor: pointer;">&times;</button>
+    </div>
+    <div class="modal-body" style="padding-top: 1rem; overflow-y: auto; max-height: calc(85vh - 70px);">
+      <!-- Live Scoreboard -->
+      <div class="live-scoreboard-header">
+        <div class="lm-team" id="lmHomeTeam" style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem; flex: 1;">
+          <span class="lm-flag" id="lmHomeFlag" style="font-size: 3rem;">🇦🇷</span>
+          <span class="lm-name" id="lmHomeName" style="font-weight: 700; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 0.05em; font-size: 1.1rem; text-align: center;">Argentina</span>
+        </div>
+        <div class="lm-score-wrap" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.25rem; min-width: 140px;">
+          <div class="lm-score-box" style="display: flex; align-items: center; gap: 0.5rem; font-family: 'Oswald', sans-serif; font-size: 2.5rem; font-weight: 700;">
+            <span class="lm-score" id="lmHomeScore">0</span>
+            <span class="lm-score-dash" style="color: var(--text-3); font-weight: 300;">:</span>
+            <span class="lm-score" id="lmAwayScore">0</span>
+          </div>
+          <div class="lm-time-box" style="padding: 0.2rem 0.6rem; border-radius: 20px; background: rgba(255,255,255,0.05); font-size: 0.85rem; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: 0.05em; color: var(--accent);">
+            <span id="lmClock">⏱️ 00:00</span>
+          </div>
+        </div>
+        <div class="lm-team" id="lmAwayTeam" style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem; flex: 1;">
+          <span class="lm-flag" id="lmAwayFlag" style="font-size: 3rem;">🇲🇽</span>
+          <span class="lm-name" id="lmAwayName" style="font-weight: 700; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 0.05em; font-size: 1.1rem; text-align: center;">México</span>
+        </div>
+      </div>
+
+      <!-- Action Button / Simulation Trigger -->
+      <div class="lm-action-bar" id="lmActionBar" style="display: flex; justify-content: center; gap: 0.5rem; margin: 1.5rem 0;">
+        <button class="btn-primary" id="startLiveSimBtn" style="padding: 0.65rem 1.5rem; font-size: 0.95rem; font-weight: 700; display: flex; align-items: center; gap: 0.35rem;">▶ Iniciar Simulación en Vivo</button>
+      </div>
+
+      <!-- Interactive 2D Pitch Representation -->
+      <div class="pitch-container" style="margin: 1.5rem 0; padding: 0.25rem; background: var(--border); border-radius: 12px; overflow: hidden; box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);">
+        <div class="soccer-pitch" style="height: 160px; background: radial-gradient(circle, #276221 0%, #173b13 100%); border-radius: 10px; position: relative; overflow: hidden; border: 2px solid rgba(255,255,255,0.15);">
+          <div class="pitch-center-circle" style="border: 2px solid rgba(255,255,255,0.15); width: 50px; height: 50px; border-radius: 50%; position: absolute; top: calc(50% - 25px); left: calc(50% - 25px);"></div>
+          <div class="pitch-center-line" style="border-left: 2px solid rgba(255,255,255,0.15); height: 100%; position: absolute; left: 50%;"></div>
+          <div class="pitch-penalty-area home" style="border: 2px solid rgba(255,255,255,0.15); border-left: none; width: 30px; height: 70px; position: absolute; left: 0; top: calc(50% - 35px);"></div>
+          <div class="pitch-penalty-area away" style="border: 2px solid rgba(255,255,255,0.15); border-right: none; width: 30px; height: 70px; position: absolute; right: 0; top: calc(50% - 35px);"></div>
+          <div class="pitch-ball" id="pitchBall" style="font-size: 1.1rem; position: absolute; top: calc(50% - 0.75rem); left: calc(50% - 0.75rem); transition: all 1.2s ease-in-out; text-shadow: 0 2px 4px rgba(0,0,0,0.5); z-index: 10; cursor: default;">⚽</div>
+          <div class="pitch-play-indicator" id="pitchPlayIndicator" style="position: absolute; bottom: 0.5rem; left: 50%; transform: translateX(-50%); font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; background: rgba(0,0,0,0.6); padding: 0.15rem 0.5rem; border-radius: 4px; color: var(--accent);">Mediocampo</div>
+        </div>
+      </div>
+
+      <!-- Live Statistics -->
+      <div class="lm-stats-section" style="margin-top: 2rem;">
+        <h4 style="font-family: 'Oswald', sans-serif; font-size: 0.95rem; letter-spacing: 0.05em; color: var(--text-2); border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; margin-bottom: 1rem;">ESTADÍSTICAS DEL PARTIDO</h4>
+        <div class="stats-grid" style="display: flex; flex-direction: column; gap: 1rem;">
+          <!-- Possession -->
+          <div class="stat-bar-group" style="display: flex; flex-direction: column; gap: 0.25rem;">
+            <div class="stat-bar-labels" style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600;">
+              <span id="lmHomePoss">50%</span>
+              <span style="color: var(--text-3); font-weight: 500; font-size: 0.8rem; text-transform: uppercase; font-family: 'Barlow Condensed', sans-serif;">Posesión</span>
+              <span id="lmAwayPoss">50%</span>
+            </div>
+            <div class="stat-bar-wrapper" style="height: 8px; border-radius: 4px; background: rgba(255,255,255,0.05); display: flex; overflow: hidden; width: 100%;">
+              <div class="stat-bar-fill home" id="lmHomePossBar" style="width: 50%; background: var(--accent); transition: width 0.8s ease;"></div>
+              <div class="stat-bar-fill away" id="lmAwayPossBar" style="width: 50%; background: #e2e8f0; transition: width 0.8s ease;"></div>
+            </div>
+          </div>
+          <!-- Shots -->
+          <div class="stat-bar-group" style="display: flex; flex-direction: column; gap: 0.25rem;">
+            <div class="stat-bar-labels" style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600;">
+              <span id="lmHomeShots">0 (0)</span>
+              <span style="color: var(--text-3); font-weight: 500; font-size: 0.8rem; text-transform: uppercase; font-family: 'Barlow Condensed', sans-serif;">Remates (Al arco)</span>
+              <span id="lmAwayShots">0 (0)</span>
+            </div>
+            <div class="stat-bar-wrapper" style="height: 8px; border-radius: 4px; background: rgba(255,255,255,0.05); display: flex; overflow: hidden; width: 100%;">
+              <div class="stat-bar-fill home" id="lmHomeShotsBar" style="width: 50%; background: var(--accent); transition: width 0.8s ease;"></div>
+              <div class="stat-bar-fill away" id="lmAwayShotsBar" style="width: 50%; background: #e2e8f0; transition: width 0.8s ease;"></div>
+            </div>
+          </div>
+          <!-- Corners -->
+          <div class="stat-bar-group" style="display: flex; flex-direction: column; gap: 0.25rem;">
+            <div class="stat-bar-labels" style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600;">
+              <span id="lmHomeCorners">0</span>
+              <span style="color: var(--text-3); font-weight: 500; font-size: 0.8rem; text-transform: uppercase; font-family: 'Barlow Condensed', sans-serif;">Tiros de Esquina</span>
+              <span id="lmAwayCorners">0</span>
+            </div>
+            <div class="stat-bar-wrapper" style="height: 8px; border-radius: 4px; background: rgba(255,255,255,0.05); display: flex; overflow: hidden; width: 100%;">
+              <div class="stat-bar-fill home" id="lmHomeCornersBar" style="width: 50%; background: var(--accent); transition: width 0.8s ease;"></div>
+              <div class="stat-bar-fill away" id="lmAwayCornersBar" style="width: 50%; background: #e2e8f0; transition: width 0.8s ease;"></div>
+            </div>
+          </div>
+          <!-- Fouls & Cards -->
+          <div class="stat-bar-group" style="display: flex; flex-direction: column; gap: 0.25rem;">
+            <div class="stat-bar-labels" style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600;">
+              <span id="lmHomeFouls">0 (🟨0 🟥0)</span>
+              <span style="color: var(--text-3); font-weight: 500; font-size: 0.8rem; text-transform: uppercase; font-family: 'Barlow Condensed', sans-serif;">Faltas (Tarjetas)</span>
+              <span id="lmAwayFouls">0 (🟨0 🟥0)</span>
+            </div>
+            <div class="stat-bar-wrapper" style="height: 8px; border-radius: 4px; background: rgba(255,255,255,0.05); display: flex; overflow: hidden; width: 100%;">
+              <div class="stat-bar-fill home" id="lmHomeFoulsBar" style="width: 50%; background: var(--accent); transition: width 0.8s ease;"></div>
+              <div class="stat-bar-fill away" id="lmAwayFoulsBar" style="width: 50%; background: #e2e8f0; transition: width 0.8s ease;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Commentary -->
+      <div class="lm-commentary-section" style="margin-top: 2rem;">
+        <h4 style="font-family: 'Oswald', sans-serif; font-size: 0.95rem; letter-spacing: 0.05em; color: var(--text-2); border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; margin-bottom: 1rem;">RETRANSMISIÓN EN VIVO</h4>
+        <div class="commentary-list" id="lmCommentaryList" style="display: flex; flex-direction: column; gap: 0.65rem; max-height: 250px; overflow-y: auto; padding-right: 0.25rem; scroll-behavior: smooth;">
+          <div class="commentary-item system" style="display: flex; gap: 0.75rem; font-size: 0.85rem; line-height: 1.4; padding: 0.35rem; border-radius: 6px; background: rgba(255,255,255,0.02);">
+            <span class="c-time" style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; color: var(--accent); min-width: 25px;">00'</span>
+            <span class="c-text" style="color: var(--text-2);">El árbitro da la orden y comienza el partido. ¡Bienvenidos a la gran fiesta de la Copa Mundial 2026! 🏆</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Detalle de Sede y Estadio -->
+<div class="modal-overlay" id="stadiumDetailModal">
+  <div class="modal-content stadium-detail-content" style="max-width: 650px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow);">
+    <div class="modal-header" style="border-bottom: 1px solid var(--border); padding: 1.1rem; display: flex; justify-content: space-between; align-items: center;">
+      <h3 id="sdTitle" style="font-family: 'Oswald', sans-serif; font-size: 1.25rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text);">Estadio Azteca</h3>
+      <button class="modal-close" id="closeStadiumModal" style="background: none; border: none; font-size: 1.5rem; color: var(--text-2); cursor: pointer; line-height: 1;">&times;</button>
+    </div>
+    <div class="modal-body" style="padding: 0; overflow-y: auto; max-height: calc(85vh - 70px);">
+      <div class="stadium-hero-wrap" style="position: relative; height: 240px; background: var(--bg-2); overflow: hidden;">
+        <img id="sdImg" src="" referrerpolicy="no-referrer" alt="Estadio" style="width: 100%; height: 100%; object-fit: cover;">
+        <div class="stadium-hero-overlay" style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.4) 60%, rgba(15,23,42,0) 100%);"></div>
+        <span class="stadium-badge" id="sdBadge" style="position: absolute; bottom: 1rem; left: 1rem; background: var(--accent); color: #000; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase;">MÉXICO</span>
+      </div>
+      
+      <!-- Stadium Details Content -->
+      <div style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem;">
+        <div>
+          <h4 style="font-family: 'Oswald', sans-serif; font-size: 1.1rem; color: var(--text); margin-bottom: 0.5rem;" id="sdCity">Ciudad de México</h4>
+          <p id="sdNote" style="font-size: 0.9rem; line-height: 1.5; color: var(--text-3);"></p>
+        </div>
+        
+        <!-- Stats Grid -->
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; background: var(--bg-2); padding: 1rem; border-radius: 8px; border: 1px solid var(--border);">
+          <div>
+            <div style="font-size: 0.75rem; color: var(--text-3); text-transform: uppercase; font-family: 'Barlow Condensed', sans-serif; font-weight: 600;">Capacidad Oficial</div>
+            <div id="sdCapacity" style="font-size: 1.1rem; font-weight: 700; color: var(--text); font-family: 'Oswald', sans-serif;">87,523</div>
+          </div>
+          <div>
+            <div style="font-size: 0.75rem; color: var(--text-3); text-transform: uppercase; font-family: 'Barlow Condensed', sans-serif; font-weight: 600;">Zona Horaria</div>
+            <div id="sdTimezone" style="font-size: 0.9rem; font-weight: 600; color: var(--text); padding-top: 0.15rem;">CST (America/Mexico_City)</div>
+          </div>
+          <div>
+            <div style="font-size: 0.75rem; color: var(--text-3); text-transform: uppercase; font-family: 'Barlow Condensed', sans-serif; font-weight: 600;">Partidos Asignados</div>
+            <div id="sdGamesCount" style="font-size: 1.1rem; font-weight: 700; color: var(--accent); font-family: 'Oswald', sans-serif;">5 Partidos</div>
+          </div>
+          <div>
+            <div style="font-size: 0.75rem; color: var(--text-3); text-transform: uppercase; font-family: 'Barlow Condensed', sans-serif; font-weight: 600;">País Sede</div>
+            <div id="sdCountry" style="font-size: 0.9rem; font-weight: 600; color: var(--text); padding-top: 0.15rem;">MEX 🇲🇽</div>
+          </div>
+        </div>
+        
+        <!-- Google Maps Satellite View -->
+        <div>
+          <h4 style="font-family: 'Oswald', sans-serif; font-size: 1rem; color: var(--text); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 0.75rem; text-transform: uppercase;">Vista Satelital 🌍</h4>
+          <div style="height: 180px; border-radius: 8px; border: 1px solid var(--border); overflow: hidden; background: var(--bg-2); margin-bottom: 1rem;">
+            <div id="sdMapContainer" style="width: 100%; height: 100%;"></div>
+          </div>
+        </div>
+        
+        <!-- Assigned Matches List -->
+        <div>
+          <h4 style="font-family: 'Oswald', sans-serif; font-size: 1rem; color: var(--text); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 0.75rem;">PARTIDOS EN ESTA SEDE</h4>
+          <div id="sdMatchesList" style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 220px; overflow-y: auto; padding-right: 0.25rem;">
+            <!-- Dinámico -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script src="app.js"></script>
 </body>
